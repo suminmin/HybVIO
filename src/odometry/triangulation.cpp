@@ -86,12 +86,16 @@ void extractCameraPoseTrail(
             assert(!p.hasNaN() && !q.hasNaN());
 
             Eigen::Matrix3d worldToCameraRot = imuToCameraRot * util::quat2rmat_d(q, d_worldToCameraRot);
-            CameraPose pose = {
-                .p = p - worldToCameraRot.transpose() * baseline,
-                .R = worldToCameraRot,
-                .baseline = baseline
-            };
-
+            //CameraPose pose = {
+            //    .p = p - worldToCameraRot.transpose() * baseline,
+            //    .R = worldToCameraRot,
+            //    .baseline = baseline
+            //};
+            CameraPose pose;
+            pose.p = p - worldToCameraRot.transpose() * baseline;
+            pose.R = worldToCameraRot;
+            pose.baseline = baseline;
+        
             assert(!pose.R.hasNaN());
             for (int j = 0; j < 4; j++) {
                 pose.dR[j] = imuToCameraRot * d_worldToCameraRot[j];
